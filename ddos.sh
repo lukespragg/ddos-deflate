@@ -1,16 +1,18 @@
 #!/bin/sh
+
 ##############################################################################
 # DDoS-Deflate version 0.6 Author: Zaf <zaf@vsnl.com>                        #
 ##############################################################################
 # This program is distributed under the "Artistic License" Agreement         #
 #                                                                            #
 # The LICENSE file is located in the same directory as this program. Please  #
-#  read the LICENSE file before you make copies or distribute this program   #
+# read the LICENSE file before you make copies or distribute this program    #
 ##############################################################################
+
 load_conf()
 {
 	CONF="/usr/local/ddos/ddos.conf"
-	if [ -f "$CONF" ] && [ ! "$CONF" ==	"" ]; then
+	if [ -f "$CONF" ] && [ ! "$CONF" == "" ]; then
 		source $CONF
 	else
 		head
@@ -30,9 +32,9 @@ showhelp()
 {
 	head
 	echo 'Usage: ddos.sh [OPTIONS] [N]'
-	echo 'N : number of tcp/udp	connections (default 150)'
+	echo 'N : number of tcp/udp connections (default 150)'
 	echo 'OPTIONS:'
-	echo '-h | --help: Show	this help screen'
+	echo '-h | --help: Show this help screen'
 	echo '-c | --cron: Create cron job to run this script regularly (default 1 mins)'
 	echo '-k | --kill: Block the offending ip making more than N connections'
 }
@@ -81,7 +83,6 @@ add_to_cron()
 	service crond restart
 }
 
-
 load_conf
 while [ $1 ]; do
 	case $1 in
@@ -112,7 +113,7 @@ TMP_FILE="mktemp $TMP_PREFIX.XXXXXXXX"
 BANNED_IP_MAIL=`$TMP_FILE`
 BANNED_IP_LIST=`$TMP_FILE`
 echo "Banned the following ip addresses on `date`" > $BANNED_IP_MAIL
-echo >>	$BANNED_IP_MAIL
+echo >> $BANNED_IP_MAIL
 BAD_IP_LIST=`$TMP_FILE`
 netstat -ntu | awk '{print $5}' | cut -d: -f1 | sort | uniq -c | sort -nr > $BAD_IP_LIST
 cat $BAD_IP_LIST
